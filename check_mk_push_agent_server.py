@@ -68,10 +68,10 @@ def push(token):
     if token not in tokens:
         abort(404)
     hostname = tokens[token]
-    redis.set(
+    redis.setex(
         ':'.join(['check_mk_push_agent', 'data', hostname]),
-        request.data,
-        ex=LIFETIME
+        LIFETIME,
+        request.data
     )
     redis.hset(
         'check_mk_push_agent:last_seen',
